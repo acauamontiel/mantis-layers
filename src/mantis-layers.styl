@@ -1,0 +1,27 @@
+$mantis ?= {}
+$mantis.layers = {
+	interval: 100,
+	context: {
+		default: (tooltip overlay modal loader),
+		modal: (close arrow)
+	}
+}
+
+index-of($list, $value)
+	for $val, $i in $list
+		return $i if $list[$i] == $value
+
+z-index()
+	$keywords = (auto inherit initial unset)
+
+	if (arguments is a 'unit') || (!!index-of($keywords, arguments))
+		z-index arguments
+	else if arguments is behind
+		z-index -1
+	else
+		$context = (length(arguments) > 1) ? arguments[0] : default
+		$layer = last(arguments)
+		$index = index-of($mantis.layers.context[$context], $layer)
+		$interval = $mantis.layers.interval
+
+		z-index ($index + 1) * $interval
